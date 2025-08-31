@@ -1,0 +1,22 @@
+body {
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: linear-gradient(135deg, #ff7eb3, #ff758c, #8e44ad);
+    font-family: Arial, sans-serif;
+}
+
+.login{
+    background-color: rgb(241, 213, 233);
+}
+
+.login-btn {
+    background-color: #ff758c;
+}
+
+.login-btn:hover {
+    background-color: #e24c65;
+}
