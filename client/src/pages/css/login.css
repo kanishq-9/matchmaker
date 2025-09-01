@@ -1,15 +1,17 @@
 body {
-    height: 100vh;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
     background: linear-gradient(135deg, #ff7eb3, #ff758c, #8e44ad);
     font-family: Arial, sans-serif;
 }
 
-.login{
+.login-main {
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login {
     background-color: rgb(241, 213, 233);
 }
 

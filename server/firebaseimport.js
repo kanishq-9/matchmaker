@@ -8,7 +8,7 @@ admin.initializeApp({
 
 const db = admin.firestore();
 
-const data = JSON.parse(fs.readFileSync("../docs/matrimonial_dataset_firestore.json","utf-8"));
+const data = JSON.parse(fs.readFileSync("../docs/matrimonial_user_dataset.json","utf-8"));
 async function importData() {
     const users = data.users;
     for(const key in users){

@@ -1,0 +1,35 @@
+.info-main{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: aliceblue;
+    width: 70%;
+    margin: 30px auto;
+    min-height: 100vh;
+    overflow: hidden;
+    transition: all 0.4s ease-in-out;
+}
+img{
+    width: 30%;
+    height: auto;
+}
+
+.nav-pills .nav-link {
+  color: #e6579e;
+  border: 1px solid #dd84a9;
+  border-radius: 25px;
+  margin: 0 5px;
+  transition: all 0.2s ease-in-out;
+}
+
+.nav-pills .nav-link:hover {
+  background-color: #f1e2ed;
+  color: #d15589;
+}
+
+.nav-pills .nav-link.active {
+  background-color: #dd75a9 !important; 
+  color: #fff !important;
+  border-color: #d8619c !important;
+  font-weight: bold;
+}
