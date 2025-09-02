@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router';
 import "./css/userdata.css";
+import { GoMail, GoNote } from "react-icons/go";
+
 
 function UserDetails() {
     const { id } = useParams();
@@ -19,20 +21,77 @@ function UserDetails() {
 
     useEffect(() => {
         fetchUser(id);
-    }, [id, fetchUser])
+    }, [id, fetchUser]);
+
+
+    function openGmailCompose(to, subject, body) {
+  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(to)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  window.open(gmailUrl, "_blank");
+}
+
+
+
+   async function handleMail() {
+  try {
+    const currentUserId = sessionStorage.getItem('id');
+
+    const userResponse = await fetch(URL + `/api/${currentUserId}`);
+    const data = await userResponse.json();
+
+    if (!data.success) {
+      console.error("Failed to fetch current user:", data);
+      return;
+    }
+
+    if (!userInfo) {
+      console.error("Target profile data (userInfo) not loaded yet.");
+      return;
+    }
+
+    const response = await fetch(URL + `/api/sendmail`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        profileData: userInfo,
+        userData: data.data,
+      }),
+    });
+
+    const resJson = await response.json();  // parse backend response
+    if (!response.ok) {
+      console.error("Mail API failed:", resJson);
+    } else {
+      console.log("Mail API success:", resJson);
+        openGmailCompose(userInfo.email, resJson.data.subject, resJson.data.body);
+
+    }
+  } catch (err) {
+    console.error("Error in handleMail:", err);
+  }
+}
+
+
     return (
         <div className='rounded info-main py-5'>
             {userInfo?
             <>
             <div className='display-4 fw-bold m-4'>Customer Details</div>
             <div className='d-flex  w-100 align-items-center'>
-                <img src={userInfo.profile_photo} className='rounded-circle mx-5' />
+                <img src={userInfo.profile_photo} className='rounded-circle mx-5' alt="user profile"/>
                 <div className='d-flex flex-column justify-content-center  h-100 h2 text-secondary'>
                     <div>{userInfo.full_name}</div>
                     <div>{userInfo.age} years</div>
                     <div>{userInfo.location}</div>
+                    <div className='d-flex justify-content-around m-2'>
+                        <div className='bg-danger text-white h5 rounded-circle p-1' style={{cursor:"pointer"}}><GoNote className='px-1' size={25}/></div>
+                        <div className='bg-success text-white h5 rounded-circle p-1' style={{cursor:"pointer"}} onClick={handleMail} ><GoMail className='px-1' size={25}/></div>
+                    </div>
                 </div>
+                
             </div>
+            
             <ul className="nav nav-pills mb-3 my-5" id="pills-tab" role="tablist">
                 <li className="nav-item" role="presentation">
                     <button className="nav-link active" id="pills-personal-tab" data-bs-toggle="pill" data-bs-target="#pills-personal" type="button" role="tab" aria-controls="pills-personal" aria-selected="true">Personal Info</button>

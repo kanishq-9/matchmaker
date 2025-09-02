@@ -43,6 +43,7 @@ export default function Login() {
       console.log(data);
       if(data.success){
         sessionStorage.setItem("userName", data.userName);
+        sessionStorage.setItem("id", data.id);
         navigate("/home");
       }
       

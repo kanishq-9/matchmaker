@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "watch": "nodemon server.js"
+    "watch": "nodemon server.js",
+    "python-dependencies": "pip install -r .\\ML\\pythonrequirements.txt"
   },
   "author": "",
   "license": "ISC",
@@ -14,8 +15,11 @@
     "nodemon": "^3.1.10"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "dotenv": "^17.2.1",
     "firebase": "^12.2.1",
-    "firebase-admin": "^13.5.0"
+    "firebase-admin": "^13.5.0",
+    "json2csv": "^6.0.0-alpha.2",
+    "python-shell": "^5.0.0"
   }
 }
