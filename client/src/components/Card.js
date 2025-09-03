@@ -1,6 +1,6 @@
 import { GoEye } from "react-icons/go";
 import "./css/card.css";
-import { useNavigate } from 'react-router';
+import { useNavigate } from "react-router";
 
 function Card({ id, age, full_name, profile_photo, location, match }) {
   const navigate = useNavigate();
@@ -15,31 +15,40 @@ function Card({ id, age, full_name, profile_photo, location, match }) {
       if (match > 75) {
         color = "success";
       } else if (match > 50) {
-        color = "warning"
-      } else {
-        color = "danger";
+        color = "warning";
       }
       return (
-        <div className={`text-${color}`}>{match}% Matched</div>
-      )
-    } else {
-      return;
-    }
-  }
-  return (
-    <div className='card-main p-3 rounded m-3 d-flex flex-column justify-content-center align-items-center'>
-      <img src={profile_photo} className='rounded-circle m-2' alt='profile' />
-      <div className='h4 fw-bold m-2'>{full_name}</div>
-      <div className='text-secondary m-2'>{age}</div>
-      <span className='text-secondary m2'>{location}</span>
-      <div className='d-flex flex-row align-items-center justify-content-around w-100' style={{ cursor: "pointer" }}>
-        <span className='d-flex flex-row justify-content-around align-items-center text-info' onClick={handleProfile}>
-          <GoEye className='mx-1' />View
-        </span>
+        <div className={`fw-bold mt-2 text-${color}`}>
+          {match}% Matched
         </div>
-      {handleMatch()}
+      );
+    }
+    return null;
+  }
+
+  return (
+    <div className="card-main">
+      <div className="card-inner">
+        <img
+          src={profile_photo}
+          className="profile-img"
+          alt="profile"
+        />
+        <div className="h5 fw-bold text-dark mt-3">{full_name}</div>
+        <div className="text-muted">{age} yrs</div>
+        <div className="text-secondary small">{location}</div>
+
+        <div
+          className="view-btn mt-3"
+          onClick={handleProfile}
+        >
+          <GoEye className="me-2" /> View Profile
+        </div>
+
+        {handleMatch()}
+      </div>
     </div>
-  )
+  );
 }
 
-export default Card
+export default Card;

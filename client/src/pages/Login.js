@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { GoPerson, GoLock } from "react-icons/go";
-import {useNavigate} from 'react-router-dom';
-
+import { useNavigate } from "react-router-dom";
 import "./css/login.css";
 
 export default function Login() {
@@ -10,72 +9,78 @@ export default function Login() {
   const navigate = useNavigate();
   const URL = "http://localhost:8000";
 
-
-  function handleUsername(event){
-    event.preventDefault();
+  function handleUsername(event) {
     setUserName(event.target.value);
   }
 
-  function handlePassword(event){
-    event.preventDefault();
+  function handlePassword(event) {
     setPassword(event.target.value);
   }
 
-  async function handleSubmit(event){
-    event.preventDefault();    
-    try{
-      if(sessionStorage.getItem("userName")){
+  async function handleSubmit(event) {
+    event.preventDefault();
+    try {
+      if (sessionStorage.getItem("userName")) {
         navigate("/home");
         return;
       }
 
-      let data = await fetch(URL+"/api/login",{
-        method:"POST",
-        headers:{
-          'Content-Type': 'application/json',
+      let data = await fetch(URL + "/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-        body:JSON.stringify({
+        body: JSON.stringify({
           userName,
-          password
-        })
+          password,
+        }),
       });
       data = await data.json();
       console.log(data);
-      if(data.success){
+      if (data.success) {
         sessionStorage.setItem("userName", data.userName);
         sessionStorage.setItem("id", data.id);
         navigate("/home");
       }
-      
-      
-    }catch(err){
+    } catch (err) {
       console.log(err);
     }
-    
   }
 
-
   return (
-    <div className='login-main'>
-    <div className='login p-2 rounded d-flex flex-column align-items-center'>
-      <div className='display-4'>Login</div>
-      <form onSubmit={handleSubmit} className='m-2 d-flex flex-column h5'>
-        <span>
-          <GoPerson/>
-        <input className='m-2 border-0' value={userName} onChange={handleUsername} type="text" placeholder="Username"/>
-        </span>
-        <span>
-          <GoLock />
-    <input className='m-2 border-0' value={password} onChange={handlePassword} type="password" placeholder='password'/>
-        </span>
-        
-        
+    <div className="login-main">
+      <div className="login-card">
+        <h2 className="login-title">Welcome</h2>
+        <form onSubmit={handleSubmit} className="login-form">
+          <div className="input-group">
+            <GoPerson className="icon" />
+            <input
+              className="input-field"
+              value={userName}
+              onChange={handleUsername}
+              type="text"
+              placeholder="Username"
+              required
+            />
+          </div>
 
-        <button className='btn login-btn m-2' type='submit'>Login</button>
+          <div className="input-group">
+            <GoLock className="icon" />
+            <input
+              className="input-field"
+              value={password}
+              onChange={handlePassword}
+              type="password"
+              placeholder="Password"
+              required
+            />
+          </div>
 
-      </form>
+          <button className="login-btn" type="submit">
+            Login
+          </button>
+        </form>
+      </div>
     </div>
-    </div>
-
-  )
+  );
 }
