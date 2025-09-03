@@ -9,7 +9,7 @@ const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
 async function generateEmailAI(profileData, userData) {
   try {
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-    
+
 
     const prompt = `
     Generate a professional email where the sender ${userData.full_name} introduces himself to the matched profile user ${profileData.full_name} .
@@ -21,12 +21,9 @@ async function generateEmailAI(profileData, userData) {
     Output format:
     Subject: ...
     Body: ...
-    `;    
+    `;
 
     const result = await model.generateContent(prompt);
-
-    // Inspect Gemini response
-    // console.log("Gemini raw result:", JSON.stringify(result, null, 2));
 
     const response = await result.response.text();
 
@@ -44,4 +41,46 @@ async function generateEmailAI(profileData, userData) {
 }
 
 
-module.exports = {generateEmailAI}
+async function generateUserMatches({ userId, currentUserProfile, notes, potentialMatches }) {
+  try {
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const prompt = `
+    You are a powerful AI matchmaker. 
+    Current user id who wants a match: ${userId}
+        Current user data who wants a match: ${JSON.stringify(currentUserProfile)}.
+        Other users data: ${JSON.stringify(potentialMatches)}.
+
+        Find the top 20 best matches for the current user. in descending order.
+        For each match, provide:
+        - userId
+        - matchPercentage (0-100)
+
+        Output JSON format:
+        [
+            { "userId": 123, "matchPercentage": 92 },
+            { "userId": 456, "matchPercentage": 87 },
+            ...
+        ]
+    `;
+    const result = await model.generateContent(prompt);
+    const responseText = await result.response.text();
+    let matches = [];
+    try {
+      const jsonMatch = responseText.match(/\[.*\]/s);
+      if (!jsonMatch) throw new Error("No JSON found in Gemini response");
+
+      matches = JSON.parse(jsonMatch[0]);
+    } catch (err) {
+      console.error("Failed to parse Gemini response:", responseText);
+      throw new Error("Invalid response from Gemini");
+    }    
+    return  matches ;
+
+  } catch (err) {
+    console.error('Error sending data to Gemini:', err);
+    return { success: false, error: err.message };
+  }
+}
+
+
+module.exports = { generateEmailAI, generateUserMatches }

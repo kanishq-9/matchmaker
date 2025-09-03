@@ -8,7 +8,7 @@ function Home() {
   const [userDetails, setUserDetails] = useState(null);
   const [showCards, setShowCards] = useState(false);
   const [searchText, setSearchText] = useState('');
-  const [title, setTitle] = useState("All Customers")
+  const [title, setTitle] = useState("Loading...");
   const navigate = useNavigate();
   const URL = "http://localhost:8000";
   const fetchUsers = useCallback(async (userName) => {
@@ -35,6 +35,7 @@ function Home() {
       setUserDetails(arrayData);
       setAllUser(arrayData);
       if (arrayData.length > 0) {
+        setTitle("All Customers");
         setShowCards(true);
       } else {
         setShowCards(false);
@@ -74,13 +75,31 @@ function Home() {
 
   async function handleAiMatch(){
     setShowCards(false);
+    setTitle("Computing...");
     const id = sessionStorage.getItem("id");
     const response = await fetch(URL+"/api/ai/"+id);
     const data = await response.json();
-    setTitle("AI Matched Customers");
     setAllUser(data);
     setUserDetails(data);
     if (data.length > 0) {
+      setTitle("AI Matched Customers");
+      setShowCards(true);
+    } else {
+      setShowCards(false);
+    }
+    
+  }
+
+  async function handleAdvanceAiMatch(){
+    setShowCards(false);
+    setTitle("Computing...");
+    const id = sessionStorage.getItem("id");
+    const response = await fetch(URL+"/api/google/ai/"+id);
+    const data = await response.json();    
+    setAllUser(data);
+    setUserDetails(data);
+    if (data.length > 0) {
+      setTitle("AI+ Matched Customers");
       setShowCards(true);
     } else {
       setShowCards(false);
@@ -107,12 +126,13 @@ function Home() {
         <input className='border-0 rounded simple-search-bar' type='text' value={searchText} onChange={handleSearch} placeholder='Search' />
       </div>
       <div className='m-3'>
-        <button className='btn ai-match-btn' onClick={handleAiMatch}>AI Match</button>
+        <button className='btn ai-match-btn mx-3' onClick={handleAiMatch}>AI Match</button>
+        <button className='btn advanced-ai-match-btn mx-3' onClick={handleAdvanceAiMatch}>AI Match +</button>
       </div>
       <div className='text-secondary fw-bold m-3'>{title}</div>
       <div className='d-flex flex-wrap justify-content-center align-items-center' style={{ width: "75%" }}>
         {showCards ? displayCards() : <div class="spinner-border text-secondary" role="status">
-          <span class="visually-hidden">Loading...</span>
+          <span className="visually-hidden">Loading...</span>
         </div>}
 
       </div>
