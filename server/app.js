@@ -8,13 +8,14 @@ const path = require('path');
 app.use(cors());
 app.use(
   helmet.contentSecurityPolicy({
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "https://cdn.jsdelivr.net"],
-      styleSrc: ["'self'", "https:", "'unsafe-inline'"],
-      imgSrc: ["'self'", "data:", "https:"],
-    },
-  })
+  directives: {
+    defaultSrc: ["'self'"],
+    scriptSrc: ["'self'", "https://cdn.jsdelivr.net"],      
+    scriptSrcElem: ["'self'", "https://cdn.jsdelivr.net"],   
+    styleSrc: ["'self'", "https:", "'unsafe-inline'"],
+    imgSrc: ["'self'", "data:", "https:"],
+  },
+})
 );
 app.use(express.json());
 
