@@ -1,0 +1,74 @@
+.journey-wrapper {
+  margin: 30px auto;
+  padding: 20px;
+  max-width: 800px;
+  background: linear-gradient(135deg, #fff, #f8f9fc);
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.journey-title {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 1.4rem;
+  color: #6a1b9a;
+  font-weight: bold;
+}
+
+.journey-steps {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.journey-steps::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  right: 10%;
+  height: 4px;
+  background: #e0e0e0;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.journey-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  position: relative;
+  z-index: 2;
+}
+
+.journey-step .circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e0e0e0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 10px;
+  transition: all 0.3s ease-in-out;
+}
+
+.journey-step.done .circle {
+  background: #9c27b0; /* purple when done */
+  box-shadow: 0 0 8px rgba(156, 39, 176, 0.6);
+}
+
+.journey-step.pending .circle {
+  background: #bdbdbd;
+}
+
+.journey-step p {
+  font-size: 0.9rem;
+  color: #555;
+  margin: 0;
+  text-align: center;
+}

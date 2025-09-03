@@ -4,10 +4,12 @@ import { GoMail, GoNote } from "react-icons/go";
 import { FaHeart } from "react-icons/fa";
 import Notes from "../components/Notes";
 import "./css/userdata.css";
+import JourneyTracker from "../components/JourneyTracker";
 
 function UserDetails() {
   const { id } = useParams();
-  const URL = "http://localhost:8000";
+  const userId = sessionStorage.getItem("id");
+  const URL = "";
   const [userInfo, setUserInfo] = useState(null);
   const [showNotes, setShowNotes] = useState(false);
   const [liked, setLiked] = useState(false);
@@ -108,8 +110,8 @@ function UserDetails() {
               </div>
             </div>
           </div>
+              <JourneyTracker userId={userId} />
 
-          {/* Tabs */}
           <div className="card mt-4 shadow-sm rounded-4">
             <div className="card-header bg-white border-0">
               <ul
@@ -164,24 +166,30 @@ function UserDetails() {
 
               {/* Contact */}
               <div className="tab-pane fade" id="pills-contact" role="tabpanel">
-                <p><strong>Email:</strong> {userInfo.email}</p>
+                <ul className="list-unstyled">
+                <li><strong>Email:</strong> {userInfo.email}</li>
+                </ul>
               </div>
 
               {/* Education */}
               <div className="tab-pane fade" id="pills-education" role="tabpanel">
-                <p><strong>College:</strong> {userInfo.college}</p>
-                <p><strong>Degree:</strong> {userInfo.education}</p>
-                <p><strong>Company:</strong> {userInfo.company}</p>
-                <p><strong>Occupation:</strong> {userInfo.occupation}</p>
-                <p><strong>Salary:</strong> ₹{userInfo.salary_inr.toLocaleString()}</p>
+                <ul className="list-unstyled">
+                <li><strong>College:</strong> {userInfo.college}</li>
+                <li><strong>Degree:</strong> {userInfo.education}</li>
+                <li><strong>Company:</strong> {userInfo.company}</li>
+                <li><strong>Occupation:</strong> {userInfo.occupation}</li>
+                <li><strong>Salary:</strong> ₹{userInfo.salary_inr.toLocaleString()}</li>
+                </ul>
               </div>
 
               {/* Family */}
               <div className="tab-pane fade" id="pills-family" role="tabpanel">
-                <p><strong>Caste:</strong> {userInfo.caste}</p>
-                <p><strong>Father:</strong> {userInfo.father_name} ({userInfo.father_occupation})</p>
-                <p><strong>Mother:</strong> {userInfo.mother_name} ({userInfo.mother_occupation})</p>
-                <p><strong>Siblings:</strong> {userInfo.siblings}</p>
+                <ul className="list-unstyled">
+                <li><strong>Caste:</strong> {userInfo.caste}</li>
+                <li><strong>Father:</strong> {userInfo.father_name} ({userInfo.father_occupation})</li>
+                <li><strong>Mother:</strong> {userInfo.mother_name} ({userInfo.mother_occupation})</li>
+                <li><strong>Siblings:</strong> {userInfo.siblings}</li>
+                </ul>
               </div>
             </div>
           </div>

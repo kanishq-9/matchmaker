@@ -10,7 +10,7 @@ function Home() {
   const [searchText, setSearchText] = useState("");
   const [title, setTitle] = useState("Loading...");
   const navigate = useNavigate();
-  const URL = "http://localhost:8000";
+  const URL = "";
 
   const fetchUsers = useCallback(async (userName) => {
     let dataFetched = await fetch(URL + "/api/user", {

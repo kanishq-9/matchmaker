@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
     "watch": "nodemon server.js",
-    "python-dependencies": "pip install -r .\\ML\\pythonrequirements.txt"
+    "python-dependencies": "pip install -r .\\ML\\pythonrequirements.txt",
+    "debug": "set DEBUG=express:* && node server.js"
   },
   "author": "",
   "license": "ISC",
@@ -20,6 +21,7 @@
     "firebase": "^12.2.1",
     "firebase-admin": "^13.5.0",
     "json2csv": "^6.0.0-alpha.2",
+    "path-to-regexp": "^6.3.0",
     "python-shell": "^5.0.0"
   }
 }

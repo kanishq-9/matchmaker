@@ -7,7 +7,7 @@ export default function Login() {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const URL = "http://localhost:8000";
+  const URL = "";
 
   function handleUsername(event) {
     setUserName(event.target.value);

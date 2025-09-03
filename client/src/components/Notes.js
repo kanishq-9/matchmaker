@@ -6,7 +6,7 @@ import "./css/notes.css";
 export default function Notes({ isOpen, onClose, profileId }) {
     const [note, setNote] = useState("");
     const navigate = useNavigate();
-    const URL = 'http://localhost:8000'
+    const URL = ''
     const senderId = sessionStorage.getItem("id");
 
     useEffect(() => {
