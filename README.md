@@ -81,7 +81,10 @@ npm run watch
 - Backend hosted on Render.<br>
 - Frontend can be deployed on Vercel, Netlify, or served as a static build(if frontend and backend runs seperate).<br>
  [My Live Project](https://matchmaker-hd7l.onrender.com/login)<br>
- if the renderis inactive wait until it comes live
+ if the renderis inactive wait until it comes live<br>
+ dummy files with data as :<br>
+ - email: select any from the dummy or for starters urvi.digambar001@example.com
+ - password: User@1234
 
  ## Helmet Configurations
  ```
