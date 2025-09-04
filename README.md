@@ -43,3 +43,55 @@ matchmaker/
 git clone <your-repo-url>
 cd matchmaker
 ```
+### 2.Install backend dependencies:
+```
+cd server
+npm install
+```
+### 3.Install frontend dependencies and build:
+```
+cd ../client
+npm install
+npm run build
+```
+### 4.Environment Variables:
+Create a .env file in the server folder:
+```
+APIKEY=...
+AUTHDOMAIN=...
+PROJECTID=...
+STORAGEBUCKET=...
+MESSAGINGSENDERID=...
+APPID=1:...
+GOOGLE_API_KEY=...
+```
+## Running the App
+### 1.Frontend Production build
+```
+cd client
+npm run build
+```
+### 2.
+```
+cd ../server
+npm run watch
+```
+
+## Deployment
+-Backend hosted on Render.
+-Frontend can be deployed on Vercel, Netlify, or served as a static build(if frontend and backend runs seperate).
+ [My Live Project](https://matchmaker-hd7l.onrender.com/login)
+ if the renderis inactive wait until it comes live
+
+ ## Helmet Configurations
+ ```
+helmet.contentSecurityPolicy({
+  directives: {
+    defaultSrc: ["'self'"],
+    scriptSrc: ["'self'", "https://cdn.jsdelivr.net"],
+    scriptSrcElem: ["'self'", "https://cdn.jsdelivr.net"],
+    styleSrc: ["'self'", "https:", "'unsafe-inline'"],
+    imgSrc: ["'self'", "data:", "https:"],
+  },
+});
+```
