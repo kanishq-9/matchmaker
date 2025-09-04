@@ -2,19 +2,19 @@
 A full-stack matchmaking platform connecting users based on preferences and profiles. Built with React, Node.js, Express, and FireBase.
 
 ## Features
--User Authentication: Signup, login, and sessions.
--User Profiles: Create, update, and view profiles with tabbed sections.
--Matching Algorithm: Matches users based on preferences and compatibility, also used genAI from gemini.
--Admin Dashboard: View and manage users, assign matches.
--Responsive UI: Built with React and Bootstrap, optimized for desktop and mobile.
--Security: Uses Helmet for CSP, cors and secure headers.
+- User Authentication: Signup, login, and sessions.
+- User Profiles: Create, update, and view profiles with tabbed sections.
+- Matching Algorithm: Matches users based on preferences and compatibility, also used genAI from gemini.
+- Admin Dashboard: View and manage users, assign matches.
+- Responsive UI: Built with React and Bootstrap, optimized for desktop and mobile.
+- Security: Uses Helmet for CSP, cors and secure headers.
 
 ## Technologies
--Frontend: React, Bootstrap, JavaScript, HTML, CSS
--Backend: Node.js, Express.js
--Database: FIreBase (NoSQL)
--Other Tools: REST APIs, Helmet for security, Nodemon for development
--Deployment + CI/CD: Render (backend), static frontend via React build
+- Frontend: React, Bootstrap, JavaScript, HTML, CSS
+- Backend: Node.js, Express.js
+- Database: FIreBase (NoSQL)
+- Other Tools: REST APIs, Helmet for security, Nodemon for development
+- Deployment + CI/CD: Render (backend), static frontend via React build
 
 ```
 matchmaker/
@@ -78,9 +78,9 @@ npm run watch
 ```
 
 ## Deployment
--Backend hosted on Render.
--Frontend can be deployed on Vercel, Netlify, or served as a static build(if frontend and backend runs seperate).
- [My Live Project](https://matchmaker-hd7l.onrender.com/login)
+- Backend hosted on Render.<br>
+- Frontend can be deployed on Vercel, Netlify, or served as a static build(if frontend and backend runs seperate).<br>
+ [My Live Project](https://matchmaker-hd7l.onrender.com/login)<br>
  if the renderis inactive wait until it comes live
 
  ## Helmet Configurations
