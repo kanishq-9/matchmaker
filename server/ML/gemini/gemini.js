@@ -49,6 +49,7 @@ async function generateUserMatches({ userId, currentUserProfile, notes, potentia
     Current user id who wants a match: ${userId}
         Current user data who wants a match: ${JSON.stringify(currentUserProfile)}.
         Other users data: ${JSON.stringify(potentialMatches)}.
+        For male customers: • Match with women who are younger, earn less, shorter, and have matching views on children For female customers: • Use thoughtful logic such as compatibility on profession, values, relocation preferences, etc.
 
         Find the top 20 best matches for the current user. in descending order. And remember matching opposite gender.
         For each match, provide:
