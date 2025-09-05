@@ -5,9 +5,9 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
+    "start": "npm install  && pip install -r requirements.txt && node server.js",
     "watch": "nodemon server.js",
-    "python-dependencies": "pip install -r .\\ML\\pythonrequirements.txt",
+    "python-dependencies": "pip install -r requirements.txt",
     "debug": "set DEBUG=express:* && node server.js"
   },
   "author": "",
