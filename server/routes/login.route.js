@@ -6,7 +6,10 @@ const {
   getAiUser,
   getAdvancedAiUser,
   getEmailPrompt,
-  setNotes
+  setNotes,
+  getJourney,
+  getJourneyUpdated,
+  getJourneyAll
 } = require("./login.controller");
 
 const route = express.Router();
@@ -15,12 +18,13 @@ route.post('/login', getUserLoginHtml);
 route.post('/user', getUser);
 route.post('/sendmail', getEmailPrompt);
 route.post('/notes', setNotes);
+route.post("/journey/update", getJourneyUpdated);
+route.post("/journey/all", getJourneyAll);
+route.post("/journey", getJourney);
 
-// Specific first
 route.get("/ai/:id", getAiUser);
 route.get("/google/ai/:id", getAdvancedAiUser);
 
-// Generic last
 route.get("/:id", getSingleUser);
 
 module.exports = { route };

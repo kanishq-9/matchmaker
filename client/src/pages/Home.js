@@ -13,6 +13,7 @@ function Home() {
   const URL = "";
 
   const fetchUsers = useCallback(async (userName) => {
+    const userId = sessionStorage.getItem("id");
     let dataFetched = await fetch(URL + "/api/user", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -21,6 +22,12 @@ function Home() {
 
     dataFetched = await dataFetched.json();
     if (dataFetched.success) {
+      const response = await fetch(URL + `/api/journey/all`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId })
+      });
+      const dataRes = await response.json();
       const arrayData = dataFetched.data.map((user) => {
         const {
           id,
@@ -28,8 +35,9 @@ function Home() {
           full_name = "Unknown",
           profile_photo = "https://randomuser.me/api/portraits/women/87.jpg",
           location = "Not specified",
+          single= dataRes.data[Number(id)].matchCommitted?false:true
         } = user;
-        return { id, age, full_name, profile_photo, location };
+        return { id, age, full_name, profile_photo, location, single };
       });
       setUserDetails(arrayData);
       setAllUser(arrayData);
@@ -71,33 +79,89 @@ function Home() {
         profile_photo={user.profile_photo}
         location={user.location}
         match={user.match_percentage}
+        single={user.single}
       />
     ));
   }
 
-  async function handleAiMatch() {
+    async function handleAiMatch() {
     setShowCards(false);
     setTitle("Computing...");
-    const id = sessionStorage.getItem("id");
-    const response = await fetch(URL + "/api/ai/" + id);
+    const userId = sessionStorage.getItem("id");
+
+    // Fetch AI matches
+    const response = await fetch(URL + "/api/ai/" + userId);
     const data = await response.json();
-    setAllUser(data);
-    setUserDetails(data);
-    setTitle(data.length > 0 ? "AI Matched Customers" : "No Matches Found");
-    setShowCards(data.length > 0);
+
+    // Fetch journey data
+    const journeyRes = await fetch(URL + `/api/journey/all`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId }),
+    });
+    const journeyData = await journeyRes.json();
+
+    // Normalize
+    const arrayData = data.map((user) => {
+      const {
+        id,
+        age = "N/A",
+        full_name = "Unknown",
+        profile_photo = "https://randomuser.me/api/portraits/men/42.jpg",
+        location = "Not specified",
+        match_percentage = 0,
+        single = journeyData.data[Number(user.id)].matchCommitted
+          ? false
+          : true,
+      } = user;
+      return { id, age, full_name, profile_photo, location, match_percentage, single };
+    });
+
+    setAllUser(arrayData);
+    setUserDetails(arrayData);
+    setTitle(arrayData.length > 0 ? "AI Matched Customers" : "No Matches Found");
+    setShowCards(arrayData.length > 0);
   }
 
   async function handleAdvanceAiMatch() {
     setShowCards(false);
     setTitle("Computing...");
-    const id = sessionStorage.getItem("id");
-    const response = await fetch(URL + "/api/google/ai/" + id);
+    const userId = sessionStorage.getItem("id");
+
+    // Fetch AI+ matches
+    const response = await fetch(URL + "/api/google/ai/" + userId);
     const data = await response.json();
-    setAllUser(data);
-    setUserDetails(data);
-    setTitle(data.length > 0 ? "AI+ Matched Customers" : "No Matches Found");
-    setShowCards(data.length > 0);
+
+    // Fetch journey data
+    const journeyRes = await fetch(URL + `/api/journey/all`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId }),
+    });
+    const journeyData = await journeyRes.json();
+
+    // Normalize
+    const arrayData = data.map((user) => {
+      const {
+        id,
+        age = "N/A",
+        full_name = "Unknown",
+        profile_photo = "https://randomuser.me/api/portraits/men/42.jpg",
+        location = "Not specified",
+        match_percentage = 0,
+        single = journeyData.data[Number(user.id)].matchCommitted
+          ? false
+          : true,
+      } = user;
+      return { id, age, full_name, profile_photo, location, match_percentage, single };
+    });
+
+    setAllUser(arrayData);
+    setUserDetails(arrayData);
+    setTitle(arrayData.length > 0 ? "AI+ Matched Customers" : "No Matches Found");
+    setShowCards(arrayData.length > 0);
   }
+
 
   useEffect(() => {
     const userName = sessionStorage.getItem("userName");

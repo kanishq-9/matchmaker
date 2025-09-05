@@ -5,7 +5,7 @@ const serviceAccount = require('../config/secret/matchmaker-d42d8-firebase-admin
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
 });
-const {generateUserMatches} = require('../ML/gemini/gemini');
+const { generateUserMatches } = require('../ML/gemini/gemini');
 
 const db = admin.firestore();
 
@@ -83,7 +83,6 @@ async function sendToPython(userId) {
         }
         const users = snapshot.docs.map(doc => doc.data());
 
-        //convert users JSON to CSV
         const csvData = parse(users);
         const result = await pythonCall(userId, csvData);
         const matchMap = new Map(result.map(item => [item.id, item.match_percentage]));
@@ -114,7 +113,7 @@ async function sendToGemini(userId) {
         const notesRef = db.collection('notes').doc(userId);
         const notesSnap = await notesRef.get();
         const notes = notesSnap.exists ? notesSnap.data().notes || {} : {};
-        
+
         const allUsersSnap = await db.collection('users').get();
         const otherUsers = [];
         allUsersSnap.forEach(doc => {
@@ -140,7 +139,7 @@ async function sendToGemini(userId) {
                     religion: data.religion,
                     salary_inr: data.siblings,
                     weight_kg: data.weight_kg,
-                    notes:notes[String(data.id)]
+                    notes: notes[String(data.id)]
                 });
             }
         });
@@ -151,17 +150,17 @@ async function sendToGemini(userId) {
             potentialMatches: otherUsers
         };
 
-         
+
         const output = await generateUserMatches(payload);
         const matchMap = new Map(output.map(item => [item.userId, item.matchPercentage]));
-        const allUser = allUsersSnap.docs.map(doc => doc.data());        
+        const allUser = allUsersSnap.docs.map(doc => doc.data());
         const filteredUsers = allUser
             .filter(user => matchMap.has(user.id))
             .map(user => ({
                 ...user,
                 match_percentage: matchMap.get(user.id),
             })).sort((a, b) => b.match_percentage - a.match_percentage);
-            
+
         return filteredUsers;
 
 
@@ -209,6 +208,157 @@ async function getNoteForProfile(senderId, profileId) {
     }
 }
 
+async function getJourneyProfile(userId, profileId) {
+    try {
+        const ref = db.collection("stages").doc(userId);
+        const docSnap = await ref.get();
+        if (!docSnap.exists) return { success: false, error: "No Journey for sender" };
+        const stages = docSnap.data();
+        return {
+            success: true,
+            data: stages[String(profileId)]
+        }
+    } catch (err) {
+        console.error("Error fetching", err);
+        return { success: false, error: err.message };
+    }
+}
+
+async function getJourneyProfileAll(userId){
+    try {
+        const ref = db.collection("stages").doc(userId);
+        const docSnap = await ref.get();
+        if (!docSnap.exists) return { success: false, error: "No Journey for sender" };
+        const stages = docSnap.data();
+        return {
+            success: true,
+            data: stages
+        }
+    } catch (err) {
+        console.error("Error fetching", err);
+        return { success: false, error: err.message };
+    }
+}
 
 
-module.exports = { doesUserExist, getUserData, getUserInfo, sendToPython, setUserNotes, getNoteForProfile, sendToGemini };
+async function updateLike(userId, profileId, matchRequestSent) {
+    try {
+        const ref = db.collection("stages").doc(userId);
+        await ref.update({
+            [`${profileId}.like`]: matchRequestSent,
+            [`${profileId}.matchRequestSent`]: matchRequestSent,
+        });
+        return { success: true };
+    } catch (err) {
+        console.error("Error updating like:", err);
+        return { success: false, error: err.message };
+    }
+}
+
+
+async function getJourneyOneProfileUpdated(
+    userId,
+    profileId,
+    profileViewed,
+    matchRequestSent,
+    matchCommitted,
+    accept
+) {
+    if (!profileId) {
+        throw new Error("profileId is missing in getJourneyOneProfileUpdated");
+    }
+    if (!userId) {
+        console.log("user id missing");
+        throw new Error("userId is missing in getJourneyOneProfileUpdated");
+    }
+    try {
+        const ref = db.collection("stages").doc(profileId);
+        let sendResponse = { success: true }
+
+
+        const updateData = {};
+        if (profileViewed !== undefined) updateData[`${userId}.profileViewed`] = profileViewed;
+        if (matchRequestSent !== undefined && accept !== undefined) {
+            updateData[`${userId}.accept`] = accept;
+            await updateLike(userId, profileId, matchRequestSent);
+
+        }
+        if (matchCommitted !== undefined) updateData[`${userId}.matchCommitted`] = matchCommitted;
+
+        if (Object.keys(updateData).length > 0) {
+            await ref.update(updateData);
+        }
+
+        return await sendResponse;
+    } catch (err) {
+        console.error("Error updating journey:", err);
+        return { success: false, error: err.message };
+    }
+}
+
+
+
+async function getJourneyManyProfileUpdated(
+    userId,
+    profileId,
+    profileViewed,
+    matchRequestSent,
+    matchCommitted,
+    accept
+) {
+    if (!profileId) {
+        throw new Error("profileId is missing in getJourneyManyProfileUpdated");
+    }
+    if (!userId) {
+        throw new Error("userId is missing in getJourneyManyProfileUpdated");
+    }
+    try {
+        const ref = db.collection("stages").doc(profileId);
+        const ref1 = db.collection("stages").doc(userId);
+        const updateData = {};
+        const updateData1 = {};
+        if (profileViewed !== undefined) updateData[`${userId}.profileViewed`] = profileViewed;
+        if (matchRequestSent !== undefined) {
+            await updateLike(userId, profileId, matchRequestSent);
+            await updateLike(profileId, userId, matchRequestSent);
+
+        }
+        if (accept !== undefined) {
+            updateData[`${userId}.accept`] = accept;
+            updateData1[`${profileId}.accept`] = accept;
+        }
+
+        if (matchCommitted !== undefined) {
+            updateData[`${userId}.matchCommitted`] = matchCommitted;
+            updateData1[`${profileId}.matchCommitted`] = matchCommitted;
+        }
+
+        if (Object.keys(updateData).length > 0) {
+            await ref.update(updateData);
+        }
+        if (Object.keys(updateData1).length > 0) {
+            await ref1.update(updateData1);
+        }
+        return { success: true };
+
+    } catch (err) {
+        console.error("Error updating journey", err);
+        return { success: false, error: err.message };
+    }
+}
+
+
+
+module.exports = {
+    doesUserExist,
+    getUserData,
+    getUserInfo,
+    sendToPython,
+    setUserNotes,
+    getNoteForProfile,
+    sendToGemini,
+    getJourneyProfile,
+    getJourneyOneProfileUpdated,
+    getJourneyManyProfileUpdated,
+    getJourneyProfileAll
+};

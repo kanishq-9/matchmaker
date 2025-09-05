@@ -14,11 +14,7 @@ const data = JSON.parse(fs.readFileSync("../docs/matrimonial_user_dataset.json",
 const stageTemplate = {
   "profileViewed": false,
   "matchRequestSent": false,
-  "matchResponse": false,
-  "continueMeeting": false,
-  "stopMeeting": false,
   "matchCommitted": false,
-  "singleAgain": false
 };
 
 async function importStages() {

@@ -14,17 +14,25 @@ function UserDetails() {
   const [showNotes, setShowNotes] = useState(false);
   const [liked, setLiked] = useState(false);
 
-  const fetchUser = useCallback(async (id) => {
+  const toggleLike = () => {
+    setLiked(!liked);
+  };
+  const trackLike = function (like) {
+    setLiked(like)
+  }
+
+
+  const fetchUser = useCallback(async () => {
     const response = await fetch(URL + `/api/${id}`);
     const data = await response.json();
     if (data.success) {
       setUserInfo(data.data);
     }
-  }, []);
+  }, [id]);
 
   useEffect(() => {
-    fetchUser(id);
-  }, [id, fetchUser]);
+    fetchUser();
+  }, [fetchUser]);
 
   function openGmailCompose(to, subject, body) {
     const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(
@@ -64,9 +72,7 @@ function UserDetails() {
       console.error("Error in handleMail:", err);
     }
   }
-  const toggleLike = () => {
-    setLiked(!liked);
-  };
+
 
   return (
     <div className="user-details-container py-5">
@@ -110,7 +116,7 @@ function UserDetails() {
               </div>
             </div>
           </div>
-              <JourneyTracker userId={userId} />
+          <JourneyTracker userId={userId} id={id} liked={liked} trackLike={trackLike} />
 
           <div className="card mt-4 shadow-sm rounded-4">
             <div className="card-header bg-white border-0">
@@ -167,28 +173,28 @@ function UserDetails() {
               {/* Contact */}
               <div className="tab-pane fade" id="pills-contact" role="tabpanel">
                 <ul className="list-unstyled">
-                <li><strong>Email:</strong> {userInfo.email}</li>
+                  <li><strong>Email:</strong> {userInfo.email}</li>
                 </ul>
               </div>
 
               {/* Education */}
               <div className="tab-pane fade" id="pills-education" role="tabpanel">
                 <ul className="list-unstyled">
-                <li><strong>College:</strong> {userInfo.college}</li>
-                <li><strong>Degree:</strong> {userInfo.education}</li>
-                <li><strong>Company:</strong> {userInfo.company}</li>
-                <li><strong>Occupation:</strong> {userInfo.occupation}</li>
-                <li><strong>Salary:</strong> ₹{userInfo.salary_inr.toLocaleString()}</li>
+                  <li><strong>College:</strong> {userInfo.college}</li>
+                  <li><strong>Degree:</strong> {userInfo.education}</li>
+                  <li><strong>Company:</strong> {userInfo.company}</li>
+                  <li><strong>Occupation:</strong> {userInfo.occupation}</li>
+                  <li><strong>Salary:</strong> ₹{userInfo.salary_inr.toLocaleString()}</li>
                 </ul>
               </div>
 
               {/* Family */}
               <div className="tab-pane fade" id="pills-family" role="tabpanel">
                 <ul className="list-unstyled">
-                <li><strong>Caste:</strong> {userInfo.caste}</li>
-                <li><strong>Father:</strong> {userInfo.father_name} ({userInfo.father_occupation})</li>
-                <li><strong>Mother:</strong> {userInfo.mother_name} ({userInfo.mother_occupation})</li>
-                <li><strong>Siblings:</strong> {userInfo.siblings}</li>
+                  <li><strong>Caste:</strong> {userInfo.caste}</li>
+                  <li><strong>Father:</strong> {userInfo.father_name} ({userInfo.father_occupation})</li>
+                  <li><strong>Mother:</strong> {userInfo.mother_name} ({userInfo.mother_occupation})</li>
+                  <li><strong>Siblings:</strong> {userInfo.siblings}</li>
                 </ul>
               </div>
             </div>

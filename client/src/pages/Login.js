@@ -6,6 +6,7 @@ import "./css/login.css";
 export default function Login() {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const URL = "";
 
@@ -19,6 +20,7 @@ export default function Login() {
 
   async function handleSubmit(event) {
     event.preventDefault();
+    setLoading(true);
     try {
       if (sessionStorage.getItem("userName")) {
         navigate("/home");
@@ -45,6 +47,7 @@ export default function Login() {
     } catch (err) {
       console.log(err);
     }
+    setLoading(false);
   }
 
   return (
@@ -77,7 +80,9 @@ export default function Login() {
           </div>
 
           <button className="login-btn" type="submit">
-            Login
+            {loading?(<div className="spinner-border text-light" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>):`Login`}
           </button>
         </form>
       </div>

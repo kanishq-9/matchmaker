@@ -13,7 +13,7 @@ def calculate_match(user1, user2):
     # Gender (prefer opposite)
     total_checks += 1
     if user1['gender'] != user2['gender']:
-        score += 1
+        score += 5
 
     # Age closeness (within 5 years)
     total_checks += 3
