@@ -22,11 +22,6 @@ export default function Login() {
     event.preventDefault();
     setLoading(true);
     try {
-      if (sessionStorage.getItem("userName")) {
-        navigate("/home");
-        return;
-      }
-
       let data = await fetch(URL + "/api/login", {
         method: "POST",
         headers: {
