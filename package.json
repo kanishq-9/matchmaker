@@ -1,16 +1,31 @@
 {
-  "name": "matchmaker",
+  "name": "server",
   "version": "1.0.0",
-  "description": "creating relation that lasts",
-  "main": "index.js",
+  "description": "",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "requirements": "npm install  && pip install -r requirements.txt",
+    "start": "node server.js",
+    "watch": "nodemon server.js",
+    "python-dependencies": "pip install -r requirements.txt",
+    "debug": "set DEBUG=express:* && node server.js"
   },
   "author": "",
   "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
     "express": "^5.1.0",
-    "helmet": "^8.1.0"
+    "firebase": "^12.2.1",
+    "firebase-admin": "^13.5.0",
+    "helmet": "^8.1.0",
+    "json2csv": "^6.0.0-alpha.2",
+    "path-to-regexp": "^6.3.0",
+    "python-shell": "^5.0.0"
   }
 }

@@ -1,8 +1,7 @@
 const { parse } = require('json2csv');
 const { pythonCall } = require('../ML/runpython');
 const admin = require('firebase-admin');
-import dotenv from "dotenv";
-dotenv.config();
+require('dotenv').config();
 
 const serviceAccount = {
   type: process.env.TYPE,
