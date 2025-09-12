@@ -107,4 +107,18 @@ helmet.contentSecurityPolicy({
 
 # API Documentation
 1. Login
-   - /api/login => 
+   - /api/login => Check if user data is in database.
+2. User Details
+   - /api/user => get user details
+   - /api/{id} => gets particular user details
+3. Mail
+   - /api/sendmail => get email prompt from generative Ai
+4. Notes
+   - /api/notes => sets notes written by user A to user B
+5. Journey
+   - /api/journey => journey of particulr user
+   - /api/journey/all => journey of every user
+   - /api/journey/update => update particular user journey
+6. AI
+   - /api/ai/{id} => get inbuilt AI generated user data
+   - /api/google/ai/{id} => get gemini generated AI user Data
