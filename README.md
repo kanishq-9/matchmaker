@@ -103,4 +103,8 @@ helmet.contentSecurityPolicy({
 ![matchmaking Demo](ezyZip.gif)
 
 # Architecture
-![matvhmaker architecture]()
+![matchmaker architecture](matchmakerArchitecture.png)
+
+# API Documentation
+1. Login
+   - /api/login => 
